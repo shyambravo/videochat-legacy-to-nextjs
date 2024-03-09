@@ -1,9 +1,6 @@
 const server = require("http").createServer();
 const io = require("socket.io")(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
+  cors: {},
 });
 
 io.on("connection", (socket) => {
@@ -23,9 +20,8 @@ io.on("connection", (socket) => {
   socket.on("answerCall", ({ iceConfig, toSocketID, toName }) => {
     io.to(toSocketID).emit("acceptedCall", { iceConfig, toName });
   });
-
 });
 
-console.log("server started successfully", process.env.PORT)
+console.log("server started successfully", process.env.PORT);
 
 server.listen(process.env.PORT || 5000);
