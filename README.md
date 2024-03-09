@@ -1,5 +1,25 @@
-# videochat
+## Getting Started
 
-1. Run the command npm install
-2. Run the peer server using peerjs --port 3001
-3. Run the node server using npm run begin
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Second, run the socket server:
+
+```bash
+npm run start-socket-server
+# or
+yarn start-socket-server
+# or
+pnpm start-socket-server
+# or
+bun start-socket-server
+```
