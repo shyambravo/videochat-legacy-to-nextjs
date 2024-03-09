@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start & npm run start-socket-server-prod",
     "lint": "next lint",
     "start-socket-server-dev": "set SOCKET_URL=localhost:5000 && node ./web-socket-server.js",
     "start-socket-server-prod": "set SOCKET_URL=localhost:5000 && node ./web-socket-server.js"
