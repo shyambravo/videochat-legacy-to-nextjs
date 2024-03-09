@@ -88,7 +88,7 @@ export default function Home() {
     if (!fromSocketID) {
       // Initiate connection and set current user socket id
       if (!socket) {
-        socket = io("localhost:5000");
+        socket = io(process.env.DOMAIN_URL);
     
         socket.on("socketID", (socketID) => {
           setFromSocketID(socketID);
