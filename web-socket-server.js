@@ -26,4 +26,6 @@ io.on("connection", (socket) => {
 
 });
 
+console.log("server started successfully")
+
 server.listen(5000);
