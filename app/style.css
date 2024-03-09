@@ -1,0 +1,29 @@
+.join-container {
+    background-color: antiquewhite;
+    height: calc(100vh - 56px);
+    background-image: url("../public/background.jpg");
+    object-fit: fill;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.join-container video{
+    width: 100%;
+    height: 100%;
+}
+
+.answer-container {
+    display: flex;
+    align-items: center;
+}
+
+.answer-container p {
+    margin: 0 5px 0 0;
+}
+
+.video-container {
+    display: grid;
+    grid-template-columns: auto;
+    gap: 10px;
+}
