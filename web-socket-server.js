@@ -26,6 +26,6 @@ io.on("connection", (socket) => {
 
 });
 
-console.log("server started successfully")
+console.log("server started successfully", process.env.PORT)
 
 server.listen(process.env.PORT || 5000);
