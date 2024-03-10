@@ -87,10 +87,7 @@ export default function Home() {
       if (!socket) {
         navigator.mediaDevices
           .getUserMedia({
-            video: {
-              width: 500,
-              height: 500,
-            },
+            video: true,
             audio: true,
           })
           .then((stream) => {
