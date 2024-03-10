@@ -26,7 +26,7 @@ export default function Home() {
     const myPeerInstance = new Peer({
       initiator: false,
       trickle: false,
-      fromStream,
+      stream: fromStream,
     });
 
     myPeerInstance.on("signal", (iceConfig) => {
@@ -59,7 +59,7 @@ export default function Home() {
     const myPeerInstance = new Peer({
       initiator: true,
       trickle: false,
-      fromStream,
+      stream: fromStream,
     });
 
     myPeerInstance.on("signal", (data) => {
