@@ -22,11 +22,11 @@ export default function Home() {
   const [fromStream, setFromStream] = useState(null);
   const [toStream, setToStream] = useState(null);
 
-  const answerCall = (name, iceConfig, toSocketID) => {
+  const answerCall = (name, iceConfig, toSocketID, stream) => {
     const myPeerInstance = new Peer({
       initiator: false,
       trickle: false,
-      stream: fromStream,
+      stream,
     });
 
     myPeerInstance.on("signal", (iceConfig) => {
@@ -43,7 +43,6 @@ export default function Home() {
       setToStream(stream);
     });
 
-    setFromStream(fromStream);
     setToName(name);
     setIsCalling(true);
   };
@@ -95,18 +94,17 @@ export default function Home() {
             audio: true,
           })
           .then((stream) => {
+            socket = io(process.env.NEXT_PUBLIC_HOST_URL);
+
+            socket.on("socketID", (socketID) => {
+              setFromSocketID(socketID);
+            });
+    
+            socket.on("incomingCall", ({ name, iceConfig, toSocketID }) => {
+              answerCall(name, iceConfig, toSocketID, stream);
+            });
             setFromStream(stream);
           });
-
-        socket = io(process.env.NEXT_PUBLIC_HOST_URL);
-
-        socket.on("socketID", (socketID) => {
-          setFromSocketID(socketID);
-        });
-
-        socket.on("incomingCall", ({ name, iceConfig, toSocketID }) => {
-          answerCall(name, iceConfig, toSocketID);
-        });
       }
 
       return;
