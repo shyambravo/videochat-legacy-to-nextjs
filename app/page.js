@@ -87,7 +87,10 @@ export default function Home() {
       if (!socket) {
         navigator.mediaDevices
           .getUserMedia({
-            video: true,
+            video: {
+              width: { max: 500 },
+              height: { max: 500 },
+            },
             audio: true,
           })
           .then((stream) => {
@@ -96,7 +99,7 @@ export default function Home() {
             socket.on("socketID", (socketID) => {
               setFromSocketID(socketID);
             });
-    
+
             socket.on("incomingCall", ({ name, iceConfig, toSocketID }) => {
               answerCall(name, iceConfig, toSocketID, stream);
             });
