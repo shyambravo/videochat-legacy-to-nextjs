@@ -4,14 +4,13 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 
 const VideoPlayer = (props) => {
-  const { fromName, toName, fromSrc, toSrc } = props;
+  const { fromSrc, toSrc } = props;
 
   return (
     <Container className="join-container">
-      <div className="video-container">
-        <Card>
-          <Card.Header>{fromName ? fromName : "You"}</Card.Header>
-          <Card.Body>
+      <section className="video-section">
+        <div className="video-container">
+          <div className="video-card">
             <video
               autoPlay
               playsInline
@@ -19,11 +18,8 @@ const VideoPlayer = (props) => {
                 if (video) video.srcObject = fromSrc;
               }}
             />
-          </Card.Body>
-        </Card>
-        <Card>
-          <Card.Header>{toName ? toName : "Other user"}</Card.Header>
-          <Card.Body>
+          </div>
+          <div className="video-card">
             <video
               autoPlay
               playsInline
@@ -31,12 +27,12 @@ const VideoPlayer = (props) => {
                 if (video) video.srcObject = toSrc;
               }}
             />
-          </Card.Body>
-        </Card>
+          </div>
+        </div>
         <Button variant="danger" onClick={() => location.reload()}>
           Disconnect Call
         </Button>
-      </div>
+      </section>
     </Container>
   );
 };

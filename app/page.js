@@ -13,87 +13,97 @@ import "./style.css";
 let socket = null;
 
 export default function Home() {
-  const [fromSocketID, setFromSocketID] = useState();
-  const [toSocketID, setToSocketID] = useState();
-  const [fromName, setFromName] = useState();
-  const [toName, setToName] = useState();
-  const [isMeeting, setMeeting] = useState();
-  const [isCalling, setIsCalling] = useState();
-  const [fromStream, setFromStream] = useState();
-  const [toStream, setToStream] = useState();
+  const [fromSocketID, setFromSocketID] = useState(null);
+  const [toSocketID, setToSocketID] = useState("");
+  const [fromName, setFromName] = useState("");
+  const [toName, setToName] = useState("");
+  const [isMeeting, setMeeting] = useState(false);
+  const [isCalling, setIsCalling] = useState(false);
+  const [fromStream, setFromStream] = useState(null);
+  const [toStream, setToStream] = useState(null);
 
   const answerCall = (name, iceConfig, toSocketID) => {
-    navigator.mediaDevices
-      .getUserMedia({
-        video: true,
-        audio: true,
-      })
-      .then((stream) => {
-        const myPeerInstance = new Peer({initiator: false, trickle: false, stream});
+    const myPeerInstance = new Peer({
+      initiator: false,
+      trickle: false,
+      fromStream,
+    });
 
-        myPeerInstance.on("signal", (iceConfig) => {
-          socket.emit("answerCall", {iceConfig, toSocketID, toName: fromName });
-        });
-
-        myPeerInstance.signal(iceConfig);
-
-        myPeerInstance.on("stream", (stream) => {
-          setToStream(stream);
-        });
-
-        setFromStream(stream);
-        setToName(name);
-        setIsCalling(true);
+    myPeerInstance.on("signal", (iceConfig) => {
+      socket.emit("answerCall", {
+        iceConfig,
+        toSocketID,
+        toName: fromName,
       });
+    });
+
+    myPeerInstance.signal(iceConfig);
+
+    myPeerInstance.on("stream", (stream) => {
+      setToStream(stream);
+    });
+
+    setFromStream(stream);
+    setToName(name);
+    setIsCalling(true);
   };
 
   const callOtherUser = () => {
+    if (!fromName.length && !toSocketID) {
+      alert("Please enter all fields");
+      return;
+    }
+
     // Initiate connection and wait for confirmation
 
-    navigator.mediaDevices
-      .getUserMedia({
-        video: true,
-        audio: true,
-      })
-      .then((stream) => {
-        const myPeerInstance = new Peer({
-          initiator: true,
-          trickle: false,
-          stream,
-        });
+    const myPeerInstance = new Peer({
+      initiator: true,
+      trickle: false,
+      fromStream,
+    });
 
-        myPeerInstance.on("signal", (data) => {
-          socket.emit("call", {
-            socketID: toSocketID,
-            iceConfig: data,
-            name: fromName,
-          });
-        });
-
-        socket.on("acceptedCall", ({ iceConfig, toName }) => {
-          setToName(toName)
-          myPeerInstance.signal(iceConfig);
-        });
-
-        myPeerInstance.on("stream", (stream) => {
-          setToStream(stream);
-        });
-
-        setFromStream(stream);
-        setMeeting(true);
+    myPeerInstance.on("signal", (data) => {
+      socket.emit("call", {
+        socketID: toSocketID,
+        iceConfig: data,
+        name: fromName,
       });
+    });
+
+    socket.on("acceptedCall", ({ iceConfig, toName }) => {
+      setToName(toName);
+      myPeerInstance.signal(iceConfig);
+    });
+
+    myPeerInstance.on("stream", (stream) => {
+      setToStream(stream);
+    });
+
+    setMeeting(true);
   };
 
   useEffect(() => {
     if (!fromSocketID) {
       // Initiate connection and set current user socket id
       if (!socket) {
+        navigator.mediaDevices
+          .getUserMedia({
+            video: {
+              width: 500,
+              height: 500
+            },
+            audio: true,
+          })
+          .then((stream) => {
+            setFromStream(stream);
+          });
+
         socket = io(process.env.NEXT_PUBLIC_HOST_URL);
-    
+
         socket.on("socketID", (socketID) => {
           setFromSocketID(socketID);
         });
-    
+
         socket.on("incomingCall", ({ name, iceConfig, toSocketID }) => {
           answerCall(name, iceConfig, toSocketID);
         });
