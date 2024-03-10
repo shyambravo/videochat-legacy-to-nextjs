@@ -43,7 +43,7 @@ export default function Home() {
       setToStream(stream);
     });
 
-    setFromStream(stream);
+    setFromStream(fromStream);
     setToName(name);
     setIsCalling(true);
   };
@@ -90,7 +90,7 @@ export default function Home() {
           .getUserMedia({
             video: {
               width: 500,
-              height: 500
+              height: 500,
             },
             audio: true,
           })
