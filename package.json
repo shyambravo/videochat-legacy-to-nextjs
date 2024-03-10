@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start & npm run start-socket-server",
-    "lint": "next lint",
-    "start-socket-server": "node ./web-socket-server.js"
+    "lint": "next lint"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
