@@ -29,9 +29,9 @@ export default function Home() {
       stream,
     });
 
-    myPeerInstance.on("signal", (iceConfig) => {
+    myPeerInstance.on("signal", (data) => {
       socket.emit("answerCall", {
-        iceConfig,
+        iceConfig: data,
         toSocketID,
         toName: fromName,
       });

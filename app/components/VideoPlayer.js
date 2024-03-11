@@ -17,6 +17,7 @@ const VideoPlayer = (props) => {
               ref={(video) => {
                 if (video) video.srcObject = fromSrc;
               }}
+              muted
             />
           </div>
           <div className="video-card">
